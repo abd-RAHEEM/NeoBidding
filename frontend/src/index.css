@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-color: #F3EFE7;
+    --surface-color: #FBF9F4;
+    --ink-color: #1B1F24;
+    --hairline-color: #DDD6C8;
+  }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--ink-color);
+    font-family: "Instrument Sans", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Custom tabular figures for numbers */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Subtle ledger scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F3EFE7;
+}
+::-webkit-scrollbar-thumb {
+  background: #DDD6C8;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B7791F;
+}
