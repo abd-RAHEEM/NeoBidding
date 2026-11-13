@@ -79,3 +79,4 @@ def ensure_lifecycle_events(rfq: RFQ, now: datetime, session: Session) -> list[A
 
     session.flush()
     return created_events
+

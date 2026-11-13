@@ -206,3 +206,4 @@ class AuctionEvent(Base):
     # Relationships
     rfq = relationship("RFQ", back_populates="events")
     bid = relationship("Bid")
+

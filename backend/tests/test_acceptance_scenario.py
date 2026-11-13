@@ -199,3 +199,4 @@ def test_scripted_acceptance_scenario(client, fake_clock):
     )
     assert r_late.status_code == 409
     assert r_late.json()["error"]["code"] == "AUCTION_CLOSED"
+

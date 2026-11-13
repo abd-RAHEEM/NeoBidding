@@ -383,3 +383,4 @@ def submit_bid(
 
     session.commit()
     return result, False
+

@@ -78,3 +78,4 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException):
 
 # Include API v1 Router
 app.include_router(api_router, prefix=settings.API_V1_PREFIX)
+

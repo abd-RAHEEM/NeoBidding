@@ -25,3 +25,4 @@ class AuctionEventListResponse(BaseModel):
     page: int
     page_size: int
     server_time: datetime
+

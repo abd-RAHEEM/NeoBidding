@@ -58,3 +58,4 @@ def create_supplier(
     db.commit()
     db.refresh(supplier)
     return SupplierResponse.model_validate(supplier)
+

@@ -9,3 +9,4 @@ _system_clock = SystemClock()
 def get_clock() -> Clock:
     """Provides clock dependency; easily overridden in tests with FakeClock."""
     return _system_clock
+

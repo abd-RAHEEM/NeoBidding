@@ -169,3 +169,4 @@ def downgrade() -> None:
     op.execute("DROP TYPE IF EXISTS extension_trigger_enum;")
     op.execute("DROP TYPE IF EXISTS auction_status_enum;")
     op.execute("DROP TYPE IF EXISTS auction_type_enum;")
+

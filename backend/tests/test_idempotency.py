@@ -127,3 +127,4 @@ def test_idempotency_workflow(client, fake_clock):
     )
     assert res_no_key.status_code == 201
     assert "Idempotent-Replay" not in res_no_key.headers
+

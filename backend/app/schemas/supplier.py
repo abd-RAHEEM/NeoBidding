@@ -23,3 +23,4 @@ class SupplierListResponse(BaseModel):
     total: int
     page: int
     page_size: int
+

@@ -19,3 +19,4 @@ class PaginatedResponse(BaseModel, Generic[T]):
     total: int
     page: int
     page_size: int
+

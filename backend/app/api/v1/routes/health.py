@@ -26,3 +26,4 @@ def health_check(db: Session = Depends(get_db), clock: Clock = Depends(get_clock
         "db": db_status,
         "time": now.isoformat(),
     }
+

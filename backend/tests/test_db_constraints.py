@@ -159,3 +159,4 @@ class TestDatabaseCheckConstraints:
             test_db.execute(sql, {"rfq_id": rfq_id})
             test_db.commit()
         test_db.rollback()
+
