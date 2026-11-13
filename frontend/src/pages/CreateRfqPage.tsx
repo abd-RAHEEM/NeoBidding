@@ -133,6 +133,7 @@ export const CreateRfqPage: React.FC = () => {
         bid_start_time: new Date(bidStartTime).toISOString(),
         bid_close_time: new Date(bidCloseTime).toISOString(),
         forced_close_time: new Date(forcedCloseTime).toISOString(),
+        auction_type: (isBritish ? 'BRITISH' : 'STANDARD') as AuctionMode,
         mode: (isBritish ? 'BRITISH' : 'STANDARD') as AuctionMode,
         supplier_ids: selectedSupplierIds,
         ...(isBritish && {

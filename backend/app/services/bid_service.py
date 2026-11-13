@@ -20,7 +20,6 @@ from app.models.enums import (
     AuctionEventType,
     AuctionStatus,
     AuctionType,
-    ExtensionTrigger,
 )
 from app.schemas.bid import BidCreate, BidRecord, BidSubmissionResult
 from app.services.auction_engine import (

@@ -1,11 +1,9 @@
 from datetime import datetime, timezone
-from typing import Sequence
-from uuid import UUID
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 
 from app.models.entities import AuctionEvent, RFQ
-from app.models.enums import AuctionEventType, AuctionStatus
+from app.models.enums import AuctionEventType
 from app.services.auction_engine import derive_status, due_lifecycle_events
 
 

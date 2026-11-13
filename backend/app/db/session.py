@@ -28,6 +28,11 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 
+def init_db() -> None:
+    from app.models.entities import Base as EntitiesBase
+    EntitiesBase.metadata.create_all(bind=engine)
+
+
 def get_db() -> Generator[Session, None, None]:
     db = SessionLocal()
     try:

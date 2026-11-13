@@ -1,7 +1,5 @@
 from datetime import datetime, timedelta, timezone
 import uuid
-import pytest
-from app.models.enums import AuctionType
 
 
 def test_idempotency_workflow(client, fake_clock):

@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import timezone
 from decimal import Decimal
 from typing import Optional
 from uuid import UUID

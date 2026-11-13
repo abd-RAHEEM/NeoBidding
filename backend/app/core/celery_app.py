@@ -2,7 +2,6 @@ from app.core.config import settings
 
 try:
     from celery import Celery
-    from celery.schedules import crontab
 
     celery_app = Celery(
         "rfq_worker",

@@ -1,0 +1,100 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: rfq_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: rfq_user
+      POSTGRES_PASSWORD: rfq_secret
+      POSTGRES_DB: rfq_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rfq_user -d rfq_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: rfq_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: rfq_api
+    restart: unless-stopped
+    command: >
+      sh -c "alembic upgrade head &&
+             python scripts/seed.py --live &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://rfq_user:rfq_secret@postgres:5432/rfq_db
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery-worker:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: rfq_celery_worker
+    restart: unless-stopped
+    command: celery -A app.core.celery_app worker -l info
+    environment:
+      - DATABASE_URL=postgresql://rfq_user:rfq_secret@postgres:5432/rfq_db
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      api:
+        condition: service_started
+
+  celery-beat:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: rfq_celery_beat
+    restart: unless-stopped
+    command: celery -A app.core.celery_app beat -l info
+    environment:
+      - DATABASE_URL=postgresql://rfq_user:rfq_secret@postgres:5432/rfq_db
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      api:
+        condition: service_started
+
+  web:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: rfq_web
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+      - "5173:80"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:

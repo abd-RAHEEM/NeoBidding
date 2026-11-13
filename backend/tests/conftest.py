@@ -1,14 +1,13 @@
 import json
 import re
+import threading
 from datetime import datetime, timezone
-from decimal import Decimal
 from typing import Any, Optional
 from urllib.parse import parse_qs, urlparse
 from uuid import UUID
 
 import pytest
 from fastapi import Response
-from fastapi.exceptions import RequestValidationError
 from pydantic import ValidationError
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
@@ -58,8 +57,6 @@ class ResponseProxy:
             return self._data
         return json.dumps(self._data)
 
-
-import threading
 
 _api_lock = threading.Lock()
 

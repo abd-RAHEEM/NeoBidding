@@ -1,8 +1,5 @@
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timedelta, timezone
-from decimal import Decimal
-import uuid
-import pytest
+from datetime import datetime, timezone
 
 
 def test_concurrent_bids_in_trigger_window(client, fake_clock):

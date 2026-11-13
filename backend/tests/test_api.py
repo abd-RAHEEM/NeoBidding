@@ -1,8 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from decimal import Decimal
 import uuid
-import pytest
-from app.models.enums import AuctionStatus, AuctionType, ExtensionTrigger
 
 
 def create_sample_suppliers(client):

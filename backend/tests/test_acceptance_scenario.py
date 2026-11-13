@@ -1,6 +1,4 @@
-from datetime import datetime, timedelta, timezone
-from decimal import Decimal
-import pytest
+from datetime import datetime, timezone
 
 
 def test_scripted_acceptance_scenario(client, fake_clock):

@@ -1,8 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from decimal import Decimal
-import uuid
 from uuid import UUID
-import pytest
 from sqlalchemy import select
 
 from app.models.entities import AuctionEvent, RFQ

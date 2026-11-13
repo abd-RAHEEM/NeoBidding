@@ -52,7 +52,8 @@ export const AuctionDetailPage: React.FC = () => {
     );
   }
 
-  const isBritish = rfq.mode === 'BRITISH';
+  const auctionType = rfq.auction_type || rfq.mode;
+  const isBritish = auctionType === 'BRITISH';
   const cfg = rfq.british_config;
 
   return (
@@ -73,7 +74,7 @@ export const AuctionDetailPage: React.FC = () => {
                 {rfq.reference_id}
               </span>
               <Badge status={rfq.status} />
-              <Badge mode={rfq.mode} />
+              <Badge mode={auctionType} />
               {isBritish && cfg && (
                 <span className="px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-bg text-muted border border-hairline">
                   Trigger: {cfg.extension_trigger}

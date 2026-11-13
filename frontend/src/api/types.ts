@@ -1,4 +1,5 @@
-export type AuctionMode = 'STANDARD' | 'BRITISH';
+export type AuctionType = 'STANDARD' | 'BRITISH';
+export type AuctionMode = AuctionType;
 
 export type ExtensionTrigger = 
   | 'BID_IN_LAST_X'
@@ -12,12 +13,15 @@ export type AuctionStatus =
   | 'FORCE_CLOSED';
 
 export type EventType =
-  | 'RFQ_CREATED'
+  | 'AUCTION_CREATED'
   | 'AUCTION_STARTED'
-  | 'BID_SUBMITTED'
+  | 'BID_PLACED'
   | 'TIME_EXTENDED'
+  | 'EXTENSION_SKIPPED_AT_FORCED_CLOSE'
   | 'AUCTION_CLOSED'
-  | 'AUCTION_FORCE_CLOSED';
+  | 'AUCTION_FORCE_CLOSED'
+  | 'RFQ_CREATED'
+  | 'BID_SUBMITTED';
 
 export type Currency = 'INR' | 'USD' | 'EUR' | 'GBP' | 'AED';
 
@@ -90,7 +94,8 @@ export interface RfqSummary {
   id: string;
   reference_id: string;
   name: string;
-  mode: AuctionMode;
+  auction_type: AuctionType;
+  mode?: AuctionMode;
   currency: Currency;
   status: AuctionStatus;
   bid_start_time: string;
@@ -106,7 +111,8 @@ export interface RfqDetail {
   id: string;
   reference_id: string;
   name: string;
-  mode: AuctionMode;
+  auction_type: AuctionType;
+  mode?: AuctionMode;
   currency: Currency;
   status: AuctionStatus;
   pickup_date: string;
@@ -132,7 +138,8 @@ export interface CreateRfqPayload {
   bid_start_time: string;
   bid_close_time: string;
   forced_close_time: string;
-  mode: AuctionMode;
+  auction_type: AuctionType;
+  mode?: AuctionMode;
   supplier_ids: string[];
   british_config?: BritishConfig;
 }

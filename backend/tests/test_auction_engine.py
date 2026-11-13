@@ -14,7 +14,6 @@ from app.services.auction_engine import (
     due_lifecycle_events,
     generate_extension_reason,
 )
-from app.services.clock import FakeClock
 
 
 @pytest.fixture
@@ -261,7 +260,7 @@ class TestEvaluateTrigger:
         assert evaluate_trigger(ExtensionTrigger.BID_IN_LAST_X, before, after) is True
 
     def test_any_rank_change_trigger(self):
-        s_a, s_b, s_c = "A", "B", "C"
+        s_a, s_b = "A", "B"
 
         # Case 1: First ever bid (empty -> [A])
         assert evaluate_trigger(ExtensionTrigger.ANY_RANK_CHANGE_IN_LAST_X, [], [self._make_rank(1, s_a, "1000")]) is True

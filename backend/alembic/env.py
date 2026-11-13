@@ -1,4 +1,3 @@
-import os
 import sys
 from logging.config import fileConfig
 from pathlib import Path
@@ -10,9 +9,8 @@ from sqlalchemy import engine_from_config, pool
 backend_dir = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(backend_dir))
 
-from app.core.config import settings
-from app.db.session import Base
-import app.models  # Ensure all models are registered
+from app.core.config import settings  # noqa: E402
+from app.db.session import Base  # noqa: E402
 
 config = context.config
 

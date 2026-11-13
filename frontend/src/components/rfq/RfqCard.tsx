@@ -10,7 +10,8 @@ interface RfqCardProps {
 }
 
 export const RfqCard: React.FC<RfqCardProps> = ({ rfq }) => {
-  const isBritish = rfq.mode === 'BRITISH';
+  const auctionType = rfq.auction_type || rfq.mode;
+  const isBritish = auctionType === 'BRITISH';
   const formatUtc = (iso: string) => {
     try {
       const d = new Date(iso);
@@ -33,7 +34,7 @@ export const RfqCard: React.FC<RfqCardProps> = ({ rfq }) => {
               {rfq.reference_id}
             </span>
             <Badge status={rfq.status} />
-            <Badge mode={rfq.mode} />
+            <Badge mode={auctionType} />
           </div>
           <h3 className="font-serif text-lg font-bold text-ink group-hover:text-accent-orange transition-colors">
             {rfq.name}
