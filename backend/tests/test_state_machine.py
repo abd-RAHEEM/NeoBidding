@@ -41,3 +41,4 @@ class TestStateMachine:
             assert_transition(from_status, to_status)
         assert exc_info.value.from_status == from_status
         assert exc_info.value.to_status == to_status
+

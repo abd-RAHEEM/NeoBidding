@@ -35,3 +35,4 @@ class FakeClock:
         """Advance time using timedelta parameters (e.g. minutes=5, seconds=10)."""
         self._current_time += timedelta(**kwargs)
         return self._current_time
+

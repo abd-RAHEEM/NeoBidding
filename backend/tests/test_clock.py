@@ -22,3 +22,4 @@ def test_fake_clock_advance_and_set():
     t1 = datetime(2026, 11, 20, 18, 0, 0, tzinfo=timezone.utc)
     clock.set_time(t1)
     assert clock.now() == t1
+

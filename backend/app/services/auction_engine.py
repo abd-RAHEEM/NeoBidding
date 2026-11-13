@@ -86,6 +86,22 @@ class SupplierRank:
     best_bid: BidSnapshot
 
 
+def _get_val(obj: Any, key: str) -> Any:
+    """Helper to extract field from either an ORM entity or a dictionary."""
+    if isinstance(obj, dict):
+        return obj[key]
+    val = getattr(obj, key, None)
+    if val is not None:
+        return val
+    # Fallback if obj implements __getitem__
+    if hasattr(obj, "__getitem__"):
+        try:
+            return obj[key]
+        except (KeyError, TypeError):
+            pass
+    return None
+
+
 def compute_ranking(bids: Sequence[Any]) -> list[SupplierRank]:
     """
     Computes ranking based on each supplier's best (lowest total_price) bid.
@@ -97,18 +113,18 @@ def compute_ranking(bids: Sequence[Any]) -> list[SupplierRank]:
     best_bids_by_supplier: dict[Any, Any] = {}
 
     for b in bids:
-        supplier_id = getattr(b, "supplier_id", None) or b["supplier_id"]
-        total_price = Decimal(str(getattr(b, "total_price", None) or b["total_price"]))
-        submitted_at = getattr(b, "submitted_at", None) or b["submitted_at"]
-        bid_id = str(getattr(b, "id", None) or b["id"])
+        supplier_id = _get_val(b, "supplier_id")
+        total_price = Decimal(str(_get_val(b, "total_price")))
+        submitted_at = _get_val(b, "submitted_at")
+        bid_id = str(_get_val(b, "id"))
 
         current_best = best_bids_by_supplier.get(supplier_id)
         if current_best is None:
             best_bids_by_supplier[supplier_id] = b
         else:
-            cb_price = Decimal(str(getattr(current_best, "total_price", None) or current_best["total_price"]))
-            cb_time = getattr(current_best, "submitted_at", None) or current_best["submitted_at"]
-            cb_id = str(getattr(current_best, "id", None) or current_best["id"])
+            cb_price = Decimal(str(_get_val(current_best, "total_price")))
+            cb_time = _get_val(current_best, "submitted_at")
+            cb_id = str(_get_val(current_best, "id"))
 
             new_tuple = (total_price, submitted_at, bid_id)
             cb_tuple = (cb_price, cb_time, cb_id)
@@ -118,9 +134,9 @@ def compute_ranking(bids: Sequence[Any]) -> list[SupplierRank]:
     # Sort suppliers by their best bid
     def sort_key(item: tuple[Any, Any]):
         b = item[1]
-        t = Decimal(str(getattr(b, "total_price", None) or b["total_price"]))
-        s = getattr(b, "submitted_at", None) or b["submitted_at"]
-        i = str(getattr(b, "id", None) or b["id"])
+        t = Decimal(str(_get_val(b, "total_price")))
+        s = _get_val(b, "submitted_at")
+        i = str(_get_val(b, "id"))
         return (t, s, i)
 
     sorted_suppliers = sorted(best_bids_by_supplier.items(), key=sort_key)
@@ -128,16 +144,16 @@ def compute_ranking(bids: Sequence[Any]) -> list[SupplierRank]:
     ranking: list[SupplierRank] = []
     for rank_idx, (supplier_id, b) in enumerate(sorted_suppliers, start=1):
         snapshot = BidSnapshot(
-            id=getattr(b, "id", None) or b["id"],
+            id=_get_val(b, "id"),
             supplier_id=supplier_id,
-            carrier_name=getattr(b, "carrier_name", None) or b["carrier_name"],
-            freight_charges=Decimal(str(getattr(b, "freight_charges", None) or b["freight_charges"])),
-            origin_charges=Decimal(str(getattr(b, "origin_charges", None) or b["origin_charges"])),
-            destination_charges=Decimal(str(getattr(b, "destination_charges", None) or b["destination_charges"])),
-            total_price=Decimal(str(getattr(b, "total_price", None) or b["total_price"])),
-            transit_time_days=int(getattr(b, "transit_time_days", None) or b["transit_time_days"]),
-            quote_validity_days=int(getattr(b, "quote_validity_days", None) or b["quote_validity_days"]),
-            submitted_at=getattr(b, "submitted_at", None) or b["submitted_at"],
+            carrier_name=_get_val(b, "carrier_name"),
+            freight_charges=Decimal(str(_get_val(b, "freight_charges"))),
+            origin_charges=Decimal(str(_get_val(b, "origin_charges"))),
+            destination_charges=Decimal(str(_get_val(b, "destination_charges"))),
+            total_price=Decimal(str(_get_val(b, "total_price"))),
+            transit_time_days=int(_get_val(b, "transit_time_days")),
+            quote_validity_days=int(_get_val(b, "quote_validity_days")),
+            submitted_at=_get_val(b, "submitted_at"),
         )
         ranking.append(SupplierRank(
             rank=rank_idx,
@@ -296,3 +312,4 @@ def generate_extension_reason(
         f"{subject} at {time_str}, inside the last {window_minutes} min window. "
         f"Close moved {old_close_str} → {new_close_str}."
     )
+
