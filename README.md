@@ -22,9 +22,9 @@ Then open:
 
 | Phase                                                     | Status      | Notes             |
 | --------------------------------------------------------- | ----------- | ----------------- |
-| Phase 0 — HLD, Schema, API Contract                       | ✅ Complete | Revised (rev 1); awaiting approval |
-| Phase 1 — Auction Engine + State Machine + Unit Tests     | 🔲 Pending  |                   |
-| Phase 2 — Bid Service, API, Migrations, Integration Tests | 🔲 Pending  |                   |
+| Phase 0 — HLD, Schema, API Contract                       | ✅ Complete | Revised (rev 1); approved |
+| Phase 1 — Auction Engine + State Machine + Unit Tests     | ✅ Complete | 37 unit tests passing (P0) |
+| Phase 2 — Bid Service, API, Migrations, Integration Tests | 🔲 Pending  | Awaiting Phase 1 approval |
 | Phase 3 — Celery Sweeper + Recovery Tests                 | 🔲 Pending  |                   |
 | Phase 4 — React Frontend                                  | 🔲 Pending  |                   |
 | Phase 5 — Docker, Seed, README completion                 | 🔲 Pending  |                   |
