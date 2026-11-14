@@ -281,7 +281,7 @@ npm run build --prefix frontend
 
 **Developed by Abdul Raheem**  
 - **GitHub:** [@abd-RAHEEM](https://github.com/abd-RAHEEM)  
-- **Repository:** [https://github.com/abd-RAHEEM/RFQ](https://github.com/abd-RAHEEM/RFQ)  
+- **Repository:** [https://github.com/abd-RAHEEM/NeoBidding](https://github.com/abd-RAHEEM/NeoBidding)  
 
 ---
 
