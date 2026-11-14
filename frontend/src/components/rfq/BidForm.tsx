@@ -44,10 +44,10 @@ export const BidForm: React.FC<BidFormProps> = ({
   }, [invitedSuppliers, selectedSupplierId]);
 
   // Find selected supplier's ranking & best bid
-  const selectedSupplierRanking = supplierRankings.find(
+  const selectedSupplierRanking: any = supplierRankings.find(
     (r) => r.supplier_id === selectedSupplierId
   );
-  const currentBestBid = selectedSupplierRanking?.best_bid;
+  const currentBestBid = selectedSupplierRanking?.best_bid || (selectedSupplierRanking?.total_price ? selectedSupplierRanking : null);
 
   // Calculate live total
   const freightNum = parseFloat(freightCharges) || 0;
@@ -55,7 +55,9 @@ export const BidForm: React.FC<BidFormProps> = ({
   const destNum = parseFloat(destinationCharges) || 0;
   const liveTotal = freightNum + originNum + destNum;
 
-  const currentBestTotal = currentBestBid ? parseFloat(currentBestBid.total_price) : null;
+  const currentBestTotal = currentBestBid
+    ? parseFloat(currentBestBid.total_price)
+    : null;
   const isLowerThanBest = currentBestTotal === null || liveTotal < currentBestTotal;
 
   const isActive = status === 'ACTIVE';
@@ -147,7 +149,7 @@ export const BidForm: React.FC<BidFormProps> = ({
           >
             {invitedSuppliers.map((s) => (
               <option key={s.id} value={s.id}>
-                {s.name} ({s.code})
+                {s.name} {s.code ? `(${s.code})` : ''}
               </option>
             ))}
           </select>
@@ -308,3 +310,4 @@ export const BidForm: React.FC<BidFormProps> = ({
     </div>
   );
 };
+

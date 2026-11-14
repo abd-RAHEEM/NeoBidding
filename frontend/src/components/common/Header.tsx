@@ -16,7 +16,7 @@ export const Header: React.FC = () => {
             <div>
               <div className="flex items-center space-x-2">
                 <span className="font-serif text-xl font-bold tracking-tight text-ink group-hover:text-accent-orange transition-colors">
-                  RFQ LEDGER
+                  NEOBIDDING
                 </span>
                 <span className="text-[10px] uppercase font-mono tracking-widest px-1.5 py-0.5 rounded bg-ink/5 text-muted border border-hairline">
                   Trading Desk
@@ -65,3 +65,4 @@ export const Header: React.FC = () => {
     </header>
   );
 };
+

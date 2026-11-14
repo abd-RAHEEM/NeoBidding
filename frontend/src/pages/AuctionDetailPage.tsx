@@ -149,7 +149,7 @@ export const AuctionDetailPage: React.FC = () => {
                     : 'text-muted hover:text-ink hover:bg-surface'
                 }`}
               >
-                1. Supplier Ranking ({rfq.supplier_rankings.length})
+                1. Supplier Ranking ({(rfq.supplier_rankings || []).length})
               </button>
               <button
                 type="button"
@@ -160,14 +160,14 @@ export const AuctionDetailPage: React.FC = () => {
                     : 'text-muted hover:text-ink hover:bg-surface'
                 }`}
               >
-                2. Bid History ({rfq.bid_history.length})
+                2. Bid History ({(rfq.bid_history || []).length})
               </button>
             </div>
 
             {/* Tab 1: Supplier Ranking */}
             {activeTab === 'RANKING' && (
               <SupplierRankingTab
-                rankings={rfq.supplier_rankings}
+                rankings={rfq.supplier_rankings || []}
                 currency={rfq.currency}
               />
             )}
@@ -175,14 +175,14 @@ export const AuctionDetailPage: React.FC = () => {
             {/* Tab 2: Full Bid History */}
             {activeTab === 'HISTORY' && (
               <BidHistoryTab
-                bids={rfq.bid_history}
+                bids={rfq.bid_history || []}
                 currency={rfq.currency}
               />
             )}
           </div>
 
           {/* Activity Log & Audit Trail */}
-          <ActivityLog events={rfq.activity_log} />
+          <ActivityLog events={rfq.activity_log || []} />
         </div>
 
         {/* Right Column: Bid Submission Form & Rules (5 cols) */}
@@ -192,8 +192,8 @@ export const AuctionDetailPage: React.FC = () => {
             rfqId={rfq.id}
             currency={rfq.currency}
             status={rfq.status}
-            invitedSuppliers={rfq.invited_suppliers}
-            supplierRankings={rfq.supplier_rankings}
+            invitedSuppliers={rfq.invited_suppliers || []}
+            supplierRankings={rfq.supplier_rankings || []}
             onBidSubmitted={() => refetch()}
           />
 

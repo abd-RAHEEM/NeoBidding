@@ -29,13 +29,28 @@ export class ApiError extends Error {
   }
 }
 
-const BASE_URL = '/api/v1';
+// Resolve API Base URL from Vite environment variables (VITE_API_BASE_URL)
+// Defaults to '/api/v1' so local development continues using the Vite proxy
+function resolveApiBaseUrl(): string {
+  const envUrl = (import.meta.env.VITE_API_BASE_URL || '').trim().replace(/\/+$/, '');
+  if (!envUrl) {
+    return '/api/v1';
+  }
+  // Ensure /api/v1 prefix is appended if user provides host only (e.g. https://xyz.onrender.com)
+  if (!envUrl.endsWith('/api/v1')) {
+    return `${envUrl}/api/v1`;
+  }
+  return envUrl;
+}
+
+const BASE_URL = resolveApiBaseUrl();
 
 export async function apiRequest<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const url = `${BASE_URL}${endpoint}`;
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const url = `${BASE_URL}${cleanEndpoint}`;
   const headers = new Headers(options.headers || {});
 
   if (!headers.has('Content-Type') && options.body && typeof options.body === 'string') {
@@ -63,3 +78,4 @@ export async function apiRequest<T>(
 
   return data as T;
 }
+

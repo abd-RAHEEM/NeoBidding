@@ -1,4 +1,4 @@
-# API Contract — British Auction RFQ System
+# API Contract — NeoBidding: British Auction RFQ System
 
 > Version 0.2 · Phase 0 (rev 1)  
 > Base path: `/api/v1`  

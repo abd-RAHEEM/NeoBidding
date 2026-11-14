@@ -9,7 +9,14 @@ import type {
 } from './types';
 
 export async function fetchSuppliers(): Promise<Supplier[]> {
-  return apiRequest<Supplier[]>('/suppliers');
+  const data = await apiRequest<any>('/suppliers');
+  if (Array.isArray(data)) {
+    return data;
+  }
+  if (data && Array.isArray(data.items)) {
+    return data.items;
+  }
+  return [];
 }
 
 export async function fetchRfqs(filters?: { status?: string; search?: string }): Promise<RfqSummary[]> {
@@ -18,14 +25,34 @@ export async function fetchRfqs(filters?: { status?: string; search?: string }):
     params.set('status', filters.status);
   }
   if (filters?.search && filters.search.trim()) {
-    params.set('search', filters.search.trim());
+    // Send 'q' which matches backend query parameter
+    params.set('q', filters.search.trim());
   }
   const query = params.toString() ? `?${params.toString()}` : '';
-  return apiRequest<RfqSummary[]>(`/rfqs${query}`);
+  const data = await apiRequest<any>(`/rfqs${query}`);
+  if (Array.isArray(data)) {
+    return data;
+  }
+  if (data && Array.isArray(data.items)) {
+    return data.items;
+  }
+  return [];
 }
 
 export async function fetchRfqDetail(rfqId: string): Promise<RfqDetail> {
-  return apiRequest<RfqDetail>(`/rfqs/${rfqId}`);
+  const data = await apiRequest<any>(`/rfqs/${rfqId}`);
+  if (data) {
+    data.supplier_rankings = Array.isArray(data.supplier_rankings)
+      ? data.supplier_rankings
+      : Array.isArray(data.ranking)
+      ? data.ranking
+      : [];
+    data.bid_history = Array.isArray(data.bid_history) ? data.bid_history : [];
+    data.activity_log = Array.isArray(data.activity_log) ? data.activity_log : [];
+    data.invited_suppliers = Array.isArray(data.invited_suppliers) ? data.invited_suppliers : [];
+    data.in_trigger_window = Boolean(data.in_trigger_window);
+  }
+  return data as RfqDetail;
 }
 
 export async function createRfq(payload: CreateRfqPayload): Promise<RfqDetail> {
@@ -48,3 +75,4 @@ export async function submitBid(
     body: JSON.stringify(payload),
   });
 }
+

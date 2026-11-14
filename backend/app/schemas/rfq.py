@@ -5,7 +5,8 @@ from uuid import UUID
 from pydantic import BaseModel, ConfigDict, Field, field_serializer, model_validator
 
 from app.models.enums import AuctionStatus, AuctionType, ExtensionTrigger
-from app.schemas.bid import serialize_decimal, serialize_utc_datetime
+from app.schemas.bid import BidRecord, serialize_decimal, serialize_utc_datetime
+from app.schemas.event import AuctionEventItem
 from app.schemas.supplier import SupplierResponse
 
 
@@ -13,6 +14,14 @@ class BritishConfigSchema(BaseModel):
     trigger_window_minutes: int = Field(..., ge=1, description="Trigger window X in minutes (>= 1)")
     extension_minutes: int = Field(..., ge=1, description="Extension duration Y in minutes (>= 1)")
     extension_trigger: ExtensionTrigger
+
+    @model_validator(mode="before")
+    @classmethod
+    def handle_aliases(cls, data):
+        if isinstance(data, dict):
+            if "extension_duration_minutes" in data and "extension_minutes" not in data:
+                data["extension_minutes"] = data["extension_duration_minutes"]
+        return data
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -28,6 +37,16 @@ class RFQCreate(BaseModel):
     forced_close_time: datetime
     invited_supplier_ids: list[UUID] = Field(..., min_length=1, description="At least one invited supplier is required")
     british_config: Optional[BritishConfigSchema] = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def handle_aliases(cls, data):
+        if isinstance(data, dict):
+            if "supplier_ids" in data and "invited_supplier_ids" not in data:
+                data["invited_supplier_ids"] = data["supplier_ids"]
+            if "mode" in data and "auction_type" not in data:
+                data["auction_type"] = data["mode"]
+        return data
 
     @model_validator(mode="after")
     def validate_rfq_times_and_config(self) -> "RFQCreate":
@@ -133,6 +152,10 @@ class RFQDetailResponse(BaseModel):
     british_config: Optional[BritishConfigSchema] = None
     invited_suppliers: list[SupplierResponse]
     ranking: list[SupplierRankDetail]
+    supplier_rankings: list[SupplierRankDetail] = []
+    bid_history: list[BidRecord] = []
+    activity_log: list[AuctionEventItem] = []
+    in_trigger_window: bool = False
     stats: RFQStats
     created_at: datetime
     server_time: datetime

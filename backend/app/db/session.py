@@ -6,13 +6,20 @@ from sqlalchemy.orm import declarative_base, sessionmaker, Session
 from app.core.config import settings
 
 connect_args = {}
+engine_kwargs = {
+    "pool_pre_ping": True,
+}
+
 if settings.DATABASE_URL.startswith("sqlite"):
     connect_args["check_same_thread"] = False
+else:
+    # Recycle connections periodically to handle cloud PostgreSQL (Neon/AWS) idle connection drops
+    engine_kwargs["pool_recycle"] = 300
 
 engine = create_engine(
     settings.DATABASE_URL,
     connect_args=connect_args,
-    pool_pre_ping=True,
+    **engine_kwargs,
 )
 
 # Enable foreign key support in SQLite
@@ -39,4 +46,3 @@ def get_db() -> Generator[Session, None, None]:
         yield db
     finally:
         db.close()
-

@@ -33,11 +33,15 @@ frontend/dist/
 frontend/.vite/
 *.tsbuildinfo
 
-# Docker
+# Environment variables & secrets
 *.env
 .env
-.env.local
-.env.*.local
+.env.*
+backend/.env
+frontend/.env
+!.env.example
+!backend/.env.example
+!frontend/.env.example
 
 # IDE
 .idea/
@@ -57,5 +61,15 @@ logs/
 .pytest_cache/
 test_reports/
 
-# PDFs (uploaded assignment docs are in root)
+# Celery Beat state files
+celerybeat-schedule*
+backend/celerybeat-schedule*
+
+# Office documents, local notes and debug files
+*.docx
+*.doc
 *.pdf
+notes/
+debug/
+*.tmp
+scripts/capture_screenshots.py

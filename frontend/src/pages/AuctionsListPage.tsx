@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchRfqs } from '../api/rfqs';
+import type { RfqSummary } from '../api/types';
 import { RfqCard } from '../components/rfq/RfqCard';
 import { RfqFilter } from '../components/rfq/RfqFilter';
 import { Link } from 'react-router-dom';
@@ -9,11 +10,17 @@ export const AuctionsListPage: React.FC = () => {
   const [status, setStatus] = useState<string>('ALL');
   const [search, setSearch] = useState<string>('');
 
-  const { data: rfqs, isLoading, error } = useQuery({
+  const { data: rawRfqs, isLoading, error } = useQuery({
     queryKey: ['rfqs', status, search],
     queryFn: () => fetchRfqs({ status, search }),
     refetchInterval: 3000, // 3-second auto-refresh
   });
+
+  const rfqs: RfqSummary[] = Array.isArray(rawRfqs)
+    ? rawRfqs
+    : (rawRfqs as any)?.items && Array.isArray((rawRfqs as any).items)
+    ? (rawRfqs as any).items
+    : [];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -83,3 +90,4 @@ export const AuctionsListPage: React.FC = () => {
     </div>
   );
 };
+

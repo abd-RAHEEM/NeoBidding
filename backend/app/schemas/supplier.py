@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 from uuid import UUID
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -13,6 +14,7 @@ class SupplierCreate(SupplierBase):
 
 class SupplierResponse(SupplierBase):
     id: UUID
+    code: Optional[str] = None
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { fetchSuppliers, createRfq } from '../api/rfqs';
-import type { Currency, ExtensionTrigger, AuctionMode } from '../api/types';
+import type { Currency, ExtensionTrigger, AuctionMode, Supplier } from '../api/types';
 import { ApiError } from '../api/client';
 
 export const CreateRfqPage: React.FC = () => {
@@ -47,16 +47,28 @@ export const CreateRfqPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const { data: suppliers = [], isLoading: isLoadingSuppliers } = useQuery({
+  const { data: rawSuppliers = [], isLoading: isLoadingSuppliers } = useQuery({
     queryKey: ['suppliers'],
     queryFn: fetchSuppliers,
   });
 
+  const suppliers: Supplier[] = Array.isArray(rawSuppliers)
+    ? rawSuppliers
+    : (rawSuppliers as any)?.items && Array.isArray((rawSuppliers as any).items)
+    ? (rawSuppliers as any).items
+    : [];
+
   const filteredSuppliers = suppliers.filter(
     (s) =>
-      s.name.toLowerCase().includes(supplierSearch.toLowerCase()) ||
-      s.code.toLowerCase().includes(supplierSearch.toLowerCase())
+      s.name?.toLowerCase().includes(supplierSearch.toLowerCase()) ||
+      (s.code ? s.code.toLowerCase().includes(supplierSearch.toLowerCase()) : false)
   );
+
+  useEffect(() => {
+    if (suppliers.length > 0 && selectedSupplierIds.length === 0) {
+      setSelectedSupplierIds(suppliers.map((s) => s.id));
+    }
+  }, [suppliers]);
 
   const handleSelectAll = () => {
     setSelectedSupplierIds(suppliers.map((s) => s.id));
@@ -136,9 +148,11 @@ export const CreateRfqPage: React.FC = () => {
         auction_type: (isBritish ? 'BRITISH' : 'STANDARD') as AuctionMode,
         mode: (isBritish ? 'BRITISH' : 'STANDARD') as AuctionMode,
         supplier_ids: selectedSupplierIds,
+        invited_supplier_ids: selectedSupplierIds,
         ...(isBritish && {
           british_config: {
             trigger_window_minutes: triggerWindowX,
+            extension_minutes: extensionDurationY,
             extension_duration_minutes: extensionDurationY,
             extension_trigger: extensionTrigger,
           },
@@ -453,7 +467,7 @@ export const CreateRfqPage: React.FC = () => {
                     <div>
                       <div>{s.name}</div>
                       <div className={`text-[10px] font-mono ${isSelected ? 'text-surface/70' : 'text-muted'}`}>
-                        {s.code}
+                        {s.code || 'Active Carrier'}
                       </div>
                     </div>
                     <span className="font-mono text-xs ml-2">

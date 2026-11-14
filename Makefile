@@ -26,3 +26,4 @@ lint:
 
 build:
 	cd frontend && pnpm build
+

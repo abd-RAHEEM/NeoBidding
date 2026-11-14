@@ -1,4 +1,4 @@
-# High-Level Design: British Auction in an RFQ System
+# High-Level Design: NeoBidding — British Auction RFQ System
 
 > Version 0.2 · Phase 0 (rev 1) · 2026-11-14  
 > Status: **DRAFT – awaiting Phase 0 approval**
@@ -571,4 +571,4 @@ This is listed in [§19 Future Work](#19-future-work).
 | Money type              | `NUMERIC(14,2)` / `Decimal` | `float`                            | Avoids floating-point rounding errors                            |
 | Font stack              | Self-hosted via @fontsource | Google Fonts CDN                   | No external CDN dependency; works offline                        |
 | Test DB                 | Real Postgres (via Docker)  | SQLite in-memory                   | CHECK constraints and `timestamptz` behave differently in SQLite |
-| Container orchestration | Docker Compose              | Kubernetes, Nomad                  | Appropriate for intern-assignment scope                          |
+| Container orchestration | Docker Compose / Render PaaS | Kubernetes, Nomad                  | Streamlined production deployments with low operational overhead |

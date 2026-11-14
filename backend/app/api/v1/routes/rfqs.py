@@ -38,7 +38,7 @@ from app.schemas.rfq import (
     SupplierRankDetail,
 )
 from app.schemas.supplier import SupplierResponse
-from app.services.auction_engine import compute_ranking, derive_status
+from app.services.auction_engine import compute_ranking, derive_status, in_trigger_window
 from app.services.bid_service import (
     AuctionClosedError,
     AuctionNotStartedError,
@@ -354,6 +354,19 @@ def get_rfq_detail_response(rfq_id: UUID, db: Session, clock: Clock) -> RFQDetai
         price_improvement_pct=price_improvement_pct,
     )
 
+    events_items = db.execute(
+        select(AuctionEvent)
+        .where(AuctionEvent.rfq_id == rfq_id)
+        .order_by(AuctionEvent.occurred_at.desc())
+        .limit(100)
+    ).scalars().all()
+    events_list = [AuctionEventItem.model_validate(e) for e in events_items]
+    bids_list = [BidRecord.model_validate(b) for b in sorted(all_bids, key=lambda b: b.submitted_at, reverse=True)]
+
+    in_trig = False
+    if rfq.auction_type == AuctionType.BRITISH and rfq.british_config:
+        in_trig = in_trigger_window(rfq.current_close_time, rfq.british_config.trigger_window_minutes, now)
+
     return RFQDetailResponse(
         id=rfq.id,
         reference_id=rfq.reference_id,
@@ -369,6 +382,10 @@ def get_rfq_detail_response(rfq_id: UUID, db: Session, clock: Clock) -> RFQDetai
         british_config=b_config,
         invited_suppliers=invited_suppliers,
         ranking=ranking_list,
+        supplier_rankings=ranking_list,
+        bid_history=bids_list,
+        activity_log=events_list,
+        in_trigger_window=in_trig,
         stats=stats,
         created_at=rfq.created_at,
         server_time=now,

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Seed script for British Auction RFQ System.
+Seed script for NeoBidding — Enterprise British Reverse Auction Platform.
 Populates suppliers and realistic sample auctions across all lifecycle states:
 1. SCHEDULED
 2. ACTIVE (regular bidding, outside trigger window)

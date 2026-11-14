@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Simulate bidding on a live British Auction RFQ.
+Simulate bidding on a live NeoBidding reverse auction.
 Demonstrates:
 1. Anti-sniping extension triggering when a quote is placed in the trigger window
 2. Idempotency protection against duplicate submissions

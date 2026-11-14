@@ -34,6 +34,7 @@ export interface Supplier {
 
 export interface BritishConfig {
   trigger_window_minutes: number;
+  extension_minutes?: number;
   extension_duration_minutes: number;
   extension_trigger: ExtensionTrigger;
 }
@@ -141,6 +142,7 @@ export interface CreateRfqPayload {
   auction_type: AuctionType;
   mode?: AuctionMode;
   supplier_ids: string[];
+  invited_supplier_ids?: string[];
   british_config?: BritishConfig;
 }
 

@@ -29,14 +29,15 @@ export const SupplierRankingTab: React.FC<SupplierRankingTabProps> = ({
           </tr>
         </thead>
         <tbody className="divide-y divide-hairline">
-          {rankings.map((row) => {
-            if (!row.has_bid || !row.best_bid) {
+          {(rankings || []).map((row: any) => {
+            const hasBid = !row.no_bid && (row.total_price !== null && row.total_price !== undefined || row.best_bid);
+            if (!hasBid) {
               return (
                 <tr key={row.supplier_id} className="opacity-50 hover:opacity-75 transition-opacity bg-bg/20">
                   <td className="py-3 px-3 font-mono text-muted text-center">—</td>
                   <td className="py-3 px-4">
-                    <div className="font-medium text-muted">{row.supplier_name}</div>
-                    <div className="text-[10px] font-mono text-muted/80">{row.supplier_code}</div>
+                    <div className="font-medium text-muted">{row.supplier_name || row.carrier_name}</div>
+                    <div className="text-[10px] font-mono text-muted/80">{row.supplier_code || ''}</div>
                   </td>
                   <td className="py-3 px-4 text-right font-mono italic text-muted" colSpan={7}>
                     No bid submitted yet (Invited)
@@ -45,8 +46,8 @@ export const SupplierRankingTab: React.FC<SupplierRankingTabProps> = ({
               );
             }
 
-            const bid = row.best_bid;
-            const isL1 = row.is_l1;
+            const bid = row.best_bid || row;
+            const isL1 = row.rank === 1 || row.is_l1;
 
             return (
               <tr
@@ -106,3 +107,4 @@ export const SupplierRankingTab: React.FC<SupplierRankingTabProps> = ({
     </div>
   );
 };
+

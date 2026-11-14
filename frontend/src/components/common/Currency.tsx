@@ -46,3 +46,4 @@ export const Currency: React.FC<CurrencyProps> = ({
     </span>
   );
 };
+

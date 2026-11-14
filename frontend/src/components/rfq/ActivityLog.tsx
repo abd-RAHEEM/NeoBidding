@@ -7,9 +7,10 @@ interface ActivityLogProps {
 }
 
 export const ActivityLog: React.FC<ActivityLogProps> = ({
-  events,
+  events = [],
   className = '',
 }) => {
+  const safeEvents = Array.isArray(events) ? events : [];
   const formatUtc = (iso: string) => {
     try {
       const d = new Date(iso);
@@ -67,15 +68,15 @@ export const ActivityLog: React.FC<ActivityLogProps> = ({
           Audit Trail & Activity Log
         </h4>
         <span className="text-[11px] font-mono text-muted">
-          {events.length} {events.length === 1 ? 'event' : 'events'} recorded
+          {safeEvents.length} {safeEvents.length === 1 ? 'event' : 'events'} recorded
         </span>
       </div>
 
       <div className="space-y-2.5 max-h-72 overflow-y-auto pr-1">
-        {events.length === 0 ? (
+        {safeEvents.length === 0 ? (
           <p className="text-xs font-mono text-muted text-center py-4">No events logged yet.</p>
         ) : (
-          events.map((evt) => {
+          safeEvents.map((evt) => {
             const isExtension = evt.event_type === 'TIME_EXTENDED';
             const reason = evt.payload?.reason || evt.payload?.trigger_type;
             const newClose = evt.payload?.new_close_time;
@@ -128,3 +129,4 @@ export const ActivityLog: React.FC<ActivityLogProps> = ({
     </div>
   );
 };
+

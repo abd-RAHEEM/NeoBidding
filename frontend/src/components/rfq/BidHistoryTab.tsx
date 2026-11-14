@@ -8,12 +8,13 @@ interface BidHistoryTabProps {
 }
 
 export const BidHistoryTab: React.FC<BidHistoryTabProps> = ({
-  bids,
+  bids = [],
   currency,
 }) => {
   const [sortBy, setSortBy] = useState<'PRICE' | 'TIME'>('TIME');
 
-  const sortedBids = [...bids].sort((a, b) => {
+  const safeBids = Array.isArray(bids) ? bids : [];
+  const sortedBids = [...safeBids].sort((a, b) => {
     if (sortBy === 'PRICE') {
       return parseFloat(a.total_price) - parseFloat(b.total_price);
     } else {
@@ -108,3 +109,4 @@ export const BidHistoryTab: React.FC<BidHistoryTabProps> = ({
     </div>
   );
 };
+
