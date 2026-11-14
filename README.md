@@ -1,6 +1,6 @@
 # NeoBidding: British Auction RFQ System
 
-> **Production-grade, full-stack British Reverse Auction engine for enterprise procurement and carrier freight bidding.**  
+> **Full-Stack British Reverse Auction engine for enterprise procurement and carrier freight bidding.**  
 > **Developed by [Abdul Raheem](https://github.com/abd-RAHEEM)**
 
 [![Backend Tests](https://img.shields.io/badge/backend%20tests-54%20passed-0B6E4F?style=for-the-badge&logo=pytest)](backend/tests/)
