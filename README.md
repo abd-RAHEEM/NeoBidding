@@ -178,7 +178,7 @@ CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 #### Frontend (`frontend/.env`):
 Create `frontend/.env` (or copy from `frontend/.env.example`):
 ```env
-# Local dev uses relative proxy fallback; production points to Render API
+# API Base URL (leave empty for local dev to use Vite proxy)
 VITE_API_BASE_URL=
 ```
 
@@ -274,21 +274,6 @@ npm run test --prefix frontend
 ```powershell
 npm run build --prefix frontend
 ```
-
----
-
-## 🌐 Production Cloud Deployment (Render Blueprint)
-
-The repository includes a production-ready `render.yaml` infrastructure-as-code blueprint:
-
-| Component | Render Service Type | Build Command | Start Command |
-| :--- | :--- | :--- | :--- |
-| **API** | Web Service (Python) | `pip install -r backend/requirements.txt && alembic -c backend/alembic.ini upgrade head` | `uvicorn app.main:app --host 0.0.0.0 --port $PORT` |
-| **Worker** | Background Worker | `pip install -r backend/requirements.txt` | `celery -A app.core.celery_app.celery_app worker --loglevel=info -c 4` |
-| **Beat** | Background Worker | `pip install -r backend/requirements.txt` | `celery -A app.core.celery_app.celery_app beat --loglevel=info -s /tmp/celerybeat-schedule` |
-| **Web** | Static Site | `npm install && npm run build` | *Static publishing (`frontend/dist`)* |
-
-For detailed step-by-step instructions, see [docs/CLOUD_DEPLOYMENT.md](docs/CLOUD_DEPLOYMENT.md).
 
 ---
 

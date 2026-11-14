@@ -73,3 +73,9 @@ notes/
 debug/
 *.tmp
 scripts/capture_screenshots.py
+
+# Local deployment manifests & guides
+render.yaml
+docker-compose.yml
+docker-compose.*.yml
+docs/CLOUD_DEPLOYMENT.md
