@@ -12,7 +12,6 @@
 [![Redis](https://img.shields.io/badge/Upstash_Redis-TLS_Broker-DC382D?style=for-the-badge&logo=redis&logoColor=white)](https://upstash.com)
 [![Celery](https://img.shields.io/badge/Celery-5.4-37814A?style=for-the-badge&logo=celery&logoColor=white)](https://docs.celeryq.dev/)
 
-
 ---
 
 ## 📸 Interactive UI Gallery
