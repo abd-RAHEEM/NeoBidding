@@ -3,8 +3,6 @@
 > **Full-Stack British Reverse Auction engine for enterprise procurement and carrier freight bidding.**  
 > **Developed by [Abdul Raheem](https://github.com/abd-RAHEEM)**
 
-[![Backend Tests](https://img.shields.io/badge/backend%20tests-54%20passed-0B6E4F?style=for-the-badge&logo=pytest)](backend/tests/)
-[![Frontend Tests](https://img.shields.io/badge/frontend%20tests-15%20passed-0B6E4F?style=for-the-badge&logo=vitest)](frontend/src/test/)
 [![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=black)](frontend/)
