@@ -164,10 +164,10 @@ When multiple suppliers submit quotes in the same millisecond:
 Create `backend/.env` (or copy from `backend/.env.example`):
 ```env
 # Neon Serverless PostgreSQL Connection String
-DATABASE_URL=postgresql://neondb_owner:YOUR_PASSWORD@ep-dawn-mountain-b36rpodf-pooler.c-4.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
+DATABASE_URL=
 
 # Upstash TLS-Enabled Redis Broker
-REDIS_URL=rediss://default:YOUR_PASSWORD@evident-stork-25760.upstash.io:6379
+REDIS_URL=
 
 # Allowed CORS Origins
 CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
